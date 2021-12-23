@@ -19,7 +19,7 @@ In this case study, I assumed the role of a Junior Data Analyst working as a mem
 
 To that end, my assignmment entailed examining the previous 12 months of historical data to identify how annual members and casual riders used Cyclistic's bike share differently.  I also needed to provide my top three recommendations based on this analysis.  They key stakeholders in this scenario include:  the director of marketing, the marketing analyst team, and the executive team. 
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
 
 ## Defining the Problem
 
@@ -49,7 +49,7 @@ I made a couple of assumptions when completing my analysis.
 
 _Note:  These issues would be things that would be discussed with my manager / project leader to determine the best approach for handling them.  Since this is a hypothetical example, I chose to deal with them in the manner described._
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
 
 ## Preparing the Data
 
@@ -74,7 +74,7 @@ A cursory review of the data revealed that a significant number of records lacke
 ### Including Additional Data
 As part of the analysis, I wanted to explore how holidays affected various facets of Cyclistic ridership.  However, I ascertained that there was no information specific to holidays contained in the monthly data.  I created a spreasheet that listed the names and dates of the federal holidays that fell within the timeframe of this study to use later in the analysis.
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
 
 ## Cleaning and Processing the Data
 
@@ -262,7 +262,7 @@ GROUP BY
 ```
 </details>
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
 	
 ## Analyzing the Data
 Now that I had a table containing cleaned data from all the combined months in the review period, I could begin my analysis.  I continued to use SQL to pull subsets of the data I could filter and sort in a variety of ways.  I saved the results of each of these queries as .CSV files and exported each to a "Summary Data" directory for access and use in other analysis and data visualization tools (Google Sheets and Tableau).  
@@ -542,7 +542,7 @@ With Google Sheets, I created pie charts to show the distribution of each bike t
 ### Other Queries
 In addition to the queries noted in the previous sections, I executed several others when compiling this information.  These other SQL statements are recorded in _Appedix 2 - SQL Queries_ contained in the final report of my analysis.  I will not describe any of these queries in further detail here since they were not ultimately used to present my findings.  In some intances I found that these queries did not give me information that was meaningful to illustrate new trends, while in other cases I made a choice to use only what seemed to provide the most insight into the data. 
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
 	
 ## Sharing the analysis
 
@@ -558,7 +558,7 @@ In the report, I laid out the key elements necessary to understand my analysis. 
 - A summary of key observations about the relationship between members and casual riders along these dimensions
 - A list of final recommendations (described below)
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
 	
 ## Taking Action
 
@@ -580,4 +580,4 @@ Also, I thought it could be useful to incorporate the customer feedback on why t
 ### Next steps
 Once I submit my report to the marketing director, the next steps fall in the hands of the company's decision makers.  I would be fully prepared to craft a presentation to make to the other stakeholders if requested and/or to respond to  requests to elaborate or answer questions on elements of my analysis.
 
-[Return to Conents](#contents)
+[Return to Contents](#contents)
