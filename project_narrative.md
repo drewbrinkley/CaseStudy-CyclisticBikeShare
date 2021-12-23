@@ -19,6 +19,8 @@ In this case study, I assumed the role of a Junior Data Analyst working as a mem
 
 To that end, my assignmment entailed examining the previous 12 months of historical data to identify how annual members and casual riders used Cyclistic's bike share differently.  I also needed to provide my top three recommendations based on this analysis.  They key stakeholders in this scenario include:  the director of marketing, the marketing analyst team, and the executive team. 
 
+[Return to Conents](#contents)
+
 ## Defining the Problem
 
 Since the goal of the new marketing strategy centered on converting casual riders into annual members, I first defined how Cyclistic categorizes its customers into these groups.  The company's offical definition of these groups is as follows:
@@ -47,6 +49,8 @@ I made a couple of assumptions when completing my analysis.
 
 _Note:  These issues would be things that would be discussed with my manager / project leader to determine the best approach for handling them.  Since this is a hypothetical example, I chose to deal with them in the manner described._
 
+[Return to Conents](#contents)
+
 ## Preparing the Data
 
 ### Reviewing Credibility
@@ -70,6 +74,8 @@ A cursory review of the data revealed that a significant number of records lacke
 ### Including Additional Data
 As part of the analysis, I wanted to explore how holidays affected various facets of Cyclistic ridership.  However, I ascertained that there was no information specific to holidays contained in the monthly data.  I created a spreasheet that listed the names and dates of the federal holidays that fell within the timeframe of this study to use later in the analysis.
 
+[Return to Conents](#contents)
+
 ## Cleaning and Processing the Data
 
 After previewing the data sets, I realized that the full scope of analysis required the use of tools other than spreadsheets due to the size of the uncompressed files.  However, I used Excel to begin the data cleaning process for a couple reasons:  the files were already in comma separated values (CSV) format which was easy to preview in a spreadsheet and the size of multiple files was exceeded import parameters of other cloud-based tools (for example, BigQuery's Sandbox limits file importation to maximum of 100 MB).
@@ -90,7 +96,7 @@ For each of the monthly data sets, I completed the following actions to clean an
 
 ### Data Cleaning with SQL
 Upon completing the preliminary on the speadsheets, I saved each month's data as a .CSV file and imported them into BigQuery to utilize SQL for further investigation.  I used a UNION ALL statement to combine the monthly data into a complete data set for the period of the analysis.  
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*UNION ALL statement to combine the complete records for each month into a single, comprehensive table sorted by date of rental in ascending order*/
@@ -157,12 +163,12 @@ UNION ALL
 ORDER BY
 	started_at;
 ```
-</detail>
+</details>
 I continued my use of SQL, as that tool was the best fit for a large table of the size created by the combined data sets.
 
 I then executed several queries to obtain summary statistics on this data set, which I used to verify subseuqent data cleaning steps returned the expected results.  
 - I queried the table to determine the total number of riders, as determined by counting the number of records in the ride_id column.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -170,9 +176,9 @@ SELECT
 FROM
 	`cyclistic_trip_data.bike_data_combined` AS bike
 ```
-</detail>
+</details>
 - I queried the number of riders, grouped by the member_type column, to verify that this sum matched the total above and ensure no values other than "casual" or "member" appeared in the data.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -183,9 +189,9 @@ FROM
 GROUP BY
 	member_type;
 ```
-</detail>
+</details>
 - I queried the number of riders of each group having a "docked" ride type.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -198,9 +204,9 @@ WHERE
 GROUP BY
 	member_type;
 ```
-</detail>
+</details>
 - I queried the number of riders of each group with a ride time of less than one minute.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*The ended_at and started_at columns have date and time data formatted as YYYY-MM-DD HH:MM:SS.  TIMESTAMP_DIFF allowed calculatation of the difference between these fields and returned the result in minutes*/
@@ -214,9 +220,9 @@ WHERE
 GROUP BY
 	member_type;
 ```
-</detail>
+</details>
 - I executed a query to return all information for records that excluded a ride type of "docked" and had a duration greater or equal to one minute.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -230,10 +236,10 @@ WHERE
 ORDER BY
 	bike.started_at;
 ```
-</detail>
+</details>
 	- I saved the results of this query into a new table and also exported them as a .CSV file to preserve the information on which further analysis was conducted.
 	- I queried this new table to verify the minimum ride duration was at least one minute.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -241,9 +247,9 @@ SELECT
 FROM
 	`cyclistic_trip_data.bike_data_clean` AS bike;
 ```
-</detail>
+</details>
 	- I queried the new table to verify that number of rides was as expected (total from combined monthly records less "docked" rides)
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -254,8 +260,10 @@ FROM
 GROUP BY
 	member_type;
 ```
-</detail>
+</details>
 
+[Return to Conents](#contents)
+	
 ## Analyzing the Data
 Now that I had a table containing cleaned data from all the combined months in the review period, I could begin my analysis.  I continued to use SQL to pull subsets of the data I could filter and sort in a variety of ways.  I saved the results of each of these queries as .CSV files and exported each to a "Summary Data" directory for access and use in other analysis and data visualization tools (Google Sheets and Tableau).  
 
@@ -271,7 +279,7 @@ Given the information contained in the monthly data, I began to explore the inte
 
 ### Average Riders per day
 I explored the distribution of casual riders and members throughout the week to see if there were differences in their riding tendencies.  I ran a query to return a count of the riders of each membership type by day.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -286,12 +294,12 @@ GROUP BY
 ORDER BY
 	member_type;
 ```
-</detail>
+</details>
 I used Google Sheets to create a bar graph displaying the number of riders per day for each membership type.  The number of members riding was relatively stable across each day.  However, there was a clear trend to the number of casual riders, which peaked during the weekends and fell off considerably during the weekdays.  I added a trendline displaying the moving averages for both membership types to help illustrate that observation.
 
 ### Holidays
 Since the data showed a clear difference in the number of casual riders on weekends versus weekdays, I wondered if there may also be an increase in casual riders on holidays.  I wrote a query to join the table of clean bike data with a table containing a list of federal holidays and return the count of the number of riders in each membership group on these dates.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*INNER JOIN used to return the records in the bike table with rental start dates matching the federal holidays defined in the holiday table.  The started_at column is formatted as YYYY-MM-DD HH:MM:SS, but the time data was not important for this query.  FORMAT_DATETIME was used to ensure the format of the date values in the bike table matched those of the holiday table*/
@@ -311,12 +319,12 @@ GROUP BY
 ORDER BY
 	holiday_date;
 ```
-</detail>
+</details>
 I used Google Sheets to compile the sum of holiday riders for each membership type, and prepared a pie chart to display the result.  There was a nearly equal distribution of members and casual riders in total.  When I plotted the number of riders for each membership type on the specific holidays, the chart showed a clear increase in ridership during the warmer months, particularly for the casual riders.  
 
 ### Average Ride times
 I was curious to see if there were differences in average ride times for members and causal riders.  I used SQL to calculate the average ride time for both groups in each of the 12 months in the review period.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*Used ROUND and AVG to provide the average ride time in minutes, rounded to 2 decimal places*/
@@ -332,12 +340,12 @@ GROUP BY
 ORDER BY
 	ride_time_minutes DESC;
 ```
-</detail> 
+</details> 
 I created a bar chart in Google Sheets to display the comparison of each month's average ride times for members and casual riders.  I also calculated the overall average ride time for each group.  The data showed that ride times for casual riders increase seasonally as the weather warms, whereas ride times for members remain relatively constant throughout the year.  The ride times for casual riders are also longer than those of members, suggesting to me that many members may ride with a destination in mind whereas casual riders may be riding more for leisure.
 
 ### Trip Destination
 I wanted to explore ride times further, so I wrote a SQL query to give me data for rides by membership type that considered the time of the rental (weekday vs. weekend) and the trip destination (one way [returned to a location that differed from the location of rental] or round trip [rented and returned at the same location]).  
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*Returns average ride time in minutes, rounded to 2 decimal places, grouped by membership type, trip type, and day of ride.  CASE statement used to assign trips as "round trip" or "one way" as determined by a comparison of the staring and ending latitudes and longitudes.  CASE statement used to categorize rides as "weekday" or "Weekend" based upon value in day_text column*/
@@ -362,14 +370,14 @@ GROUP BY
 	trip_type,
 	day;
 ```
-</detail>
+</details>
 I created a chart in Google Sheets to show the impact time of week and trip destination has on the average ride times for each membership type.  I noticed obvious differences in ride times, with round trips being significantly longer than one-way rides.  Round trips for casual riders were also over twice as long as those of members.  The group with the most comparable ride times were one-way rides that took place on weekdays.
 
 ### Ridership by Time of Day
 I wanted to check for trends in the number of riders who initiated their rentals within the most frequent commuting hours as compared to non-peak times.  I also incorporated the geographic information into some of the SQL to see how location related.  My thinking was that a cluster of members and casual riders using bikes at common times and locations may share purposes for renting.  I wrote several SQL queries to extract this information from the data set.
 
 Query to return top 250 rental locations of members grouped by the time of rental (peak vs. non-peak commuting hours) and type of bike (classic or electric)
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*CASE statement used to assign ride to specific windows of time, based upon the time of rental.  The started_at field is in DATETIME format, and the hour of rental was extracted to be used for sorting the data into the appropriate group.  CONCAT was used to combine latitude and longitude coordinates into a single column to faciliate correcdt grouping of rental locations*/
@@ -397,9 +405,9 @@ ORDER BY
 LIMIT 
 	250;
 ```
-</detail>
+</details>
 Query to return top 250 rental locations of casual riders grouped by the time of rental (peak vs. non-peak commuting hours) and type of bike (classic or electric)
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*CASE statement used to assign ride to specific windows of time, based upon the time of rental.  The started_at field is in DATETIME format, and the hour of rental was extracted to be used for sorting the data into the appropriate group.  CONCAT was used to combine latitude and longitude coordinates into a single column to faciliate correcdt grouping of rental locations*/
@@ -427,11 +435,11 @@ ORDER BY
 LIMIT 
 	250;
 ```
-</detail>
+</details>
 I used Google Sheets to split the start locations back into separate columns for latitude and longitude.  I also added a new column to display the ranked order of each result.  The data was then imported into Tableau, where I created maps to plot the results.  I set up a filter to show the locations by the time of the rental and observed that only 3 of the top locations for casual riders fell during the morning commuting hours.  These locations were in areas of the city near tourist attractions and hotels, suggesting to me that a number of these riders may not be residents of the Cyclistic service area.
 
 Query to investigate the number of riders of each membership type, grouped by day (weekend vs weekday) and time (peak vs. non-peak commuting hours) of rental
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -456,11 +464,11 @@ GROUP BY
 	time_of_day,
 	day;
 ```
-</detail>
+</details>
 I created pie charts in Google Sheets to display the proportions of rentals by time and day of each membership type.  Members and casual riders shared the same top two categories (evening commute and non-peak hours, both on weekdays).  There was also a large slice of casual riders who rent bikes on weekends during non-peak hours.
 
 Query to compile monthly number of riders of each membership type, based upon the time (peak vs. non-peak commuting hours) and day (weekday vs. weekend) of rental
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 /*FORMAT_DATETIME used to return rental month and year of started_at column, which was originally formatted as YYYY-MM-DD HH:MM:SS*/
@@ -488,12 +496,12 @@ GROUP BY
 	time_of_day,
 	day;
 ```
-</detail>
+</details>
 These query results were imported into Google Sheets, where I calculated the percentage of monthly change of riderships in each category (member vs. casual, weekday vs. weekend).  I charted these results to help visualize seasonal trends in ridership.  The trendlines showed that an increase in casual ridership has a greater positive correlation to warmer months of the year than members.
 
 ### Rental Location
 I leveraged the geographic coordinates in the rental data to look for hotspots throughout the Cyclistic service area.  I queried the data to generate a list of the top 100 locations for rental, grouped by membership type.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -510,12 +518,12 @@ ORDER BY
 LIMIT
 	100;
 ```
-</detail>
+</details>
 Using Google Sheets, I split the staring location into separate columns for latitude and longitude and added a new column for rank before importing the table into Tableau.  I plotted the results onto a map of the Chicago area that included neighborhoods, major points of interest, and public transportation stations.  I captured several views of different areas of the service area and noticed several rental hotspots for members in close proximity to public transit.  Multiple locations also appeared to be significant rental locations for both membership groups.
 
 ### Bike Types
 One of the prior queries returned results for the top 250 rental areas for members and casual members to include detail on the type of bike rented (classic vs. electric).  To supplement this, I also wrote a new query to provide the count of each membership type for these bike types.
-<detail>
+<details>
 <summary>Show SQL</summary>
 ```sql
 SELECT
@@ -528,12 +536,14 @@ GROUP BY
 	bike_type,
 	member_type
 ```
-</detail>
+</details>
 With Google Sheets, I created pie charts to show the distribution of each bike type within the different membership groups.  The data showed a preference for classic bikes for both members and casual riders.  However, when the top 250 rental locations for each membership group were viewed on Tableau-generated maps, it became apparent to me that electric bikes did not seem to be a major consideration.  The data could not reveal whether this was due to rider preference or bike availability.  However, I eliminated bike type as a factor I needed to consider when making my recommendations.
 
 ### Other Queries
 In addition to the queries noted in the previous sections, I executed several others when compiling this information.  These other SQL statements are recorded in _Appedix 2 - SQL Queries_ contained in the final report of my analysis.  I will not describe any of these queries in further detail here since they were not ultimately used to present my findings.  In some intances I found that these queries did not give me information that was meaningful to illustrate new trends, while in other cases I made a choice to use only what seemed to provide the most insight into the data. 
 
+[Return to Conents](#contents)
+	
 ## Sharing the analysis
 
 In this scenario, my direct manager gave this assignment to me.  I was to report my findings back to her at the conclusion of my work.   My analysis may also need to be available for sharing with the other stakeholders:  members of the marketing team (some of which were working to answer other questions releavant to the proposed marketing campaign) and the executive team, who will ultimately be making decisions about how to proceed with the company's marketing efforts.  I knew I had to share information directly with my manager and thus expected to brief her in person at the project's conclusion.  I decided to write up a report of my analysis that could be provided to the other stakeholders for their review as needed. 
@@ -548,6 +558,8 @@ In the report, I laid out the key elements necessary to understand my analysis. 
 - A summary of key observations about the relationship between members and casual riders along these dimensions
 - A list of final recommendations (described below)
 
+[Return to Conents](#contents)
+	
 ## Taking Action
 
 When I concluded my analysis, I arrived at three recommendations to inform how to structure the new marketing campaign.
@@ -567,3 +579,5 @@ Also, I thought it could be useful to incorporate the customer feedback on why t
 
 ### Next steps
 Once I submit my report to the marketing director, the next steps fall in the hands of the company's decision makers.  I would be fully prepared to craft a presentation to make to the other stakeholders if requested and/or to respond to  requests to elaborate or answer questions on elements of my analysis.
+
+[Return to Conents](#contents)
