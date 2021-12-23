@@ -22,18 +22,18 @@ To that end, my assignmment entailed examining the previous 12 months of histori
 ## Defining the Problem
 
 Since the goal of the new marketing strategy centered on converting casual riders into annual members, I first defined how Cyclistic categorizes its customers into these groups.  The company's offical definition of these groups is as follows:
-* Members:  Cyclistic customers who purchase annual memberships
-+ Casual Riders:  customers who purchase single-ride or full-day passes
+- Members:  Cyclistic customers who purchase annual memberships
+- Casual Riders:  customers who purchase single-ride or full-day passes
 However, I needed to drill down more into the casual ridership segment to identify a subsegment worthy of targeting for the proposed marketing strategy.  
 
 I assumed that some casual riders reside in the Cyclistic service area whereas others are Chicago-area visitors who decided to rent bikes for transportation or excursions when touring the city.  Of these groups, there are likely riders who are one-time or infrequent riders as well as customers who rent bikes multiple times during the year.  The slice of the casual rider group that should be the focus of the marketing efforts includes those riders who live in the Chicago area and rent bikes multiple times a year.
-![Casual Ridership:  Target Group](/images/member_flowchart.png) 
+![Casual Ridership:  Target Group](./member_flowchart.png) 
 
 I also created a Venn diagram to help visualize the different segments of Cyclistic's customer base.  It can be divided into three broad segments:
 1. Members whose riding habits and preferences differ from those of casual riders
 1. Casual riders whose riding habits and preferences differ from those of members
 1. Casual riders whose riding habits and preferences mirror those of members, but who have not elected to purchase annual memberships
-![Venn Diagram of Membership Types](/images/venn_diagram.png)
+![Venn Diagram of Membership Types](./venn_diagram.png)
 
 ### Limitations of the Data
 Unfortunately, the Cyclistic data lacks detail in a couple of key areas beneficial in informing new marketing efforts.  
@@ -44,6 +44,7 @@ Unfortunately, the Cyclistic data lacks detail in a couple of key areas benefici
 I made a couple of assumptions when completing my analysis.  
 1. Ride durations of less than one (1) minute were excluded.  They may indicate a user re-docking a bike to verify its security during return, or they may indiacte a "false start" and not an actual ride.
 1. 	The analysis should not include rides with a type "docked."  This classification represents a rental parked at one of the Cyclistic bike stations throughout the service area, though the user will be returning to the bike before completing their ride.  The additional trip(s) will be counted as new rides.
+
 _Note:  These issues would be things that would be discussed with my manager / project leader to determine the best approach for handling them.  Since this is a hypothetical example, I chose to deal with them in the manner described._
 
 ## Preparing the Data
@@ -57,7 +58,7 @@ In this case study, the data on bike ridership was first party data since it was
 Each month's data was contained in a ZIP file, which I downloaded to my local machine for initial review, transformation, and cleaning.  In accorandance with standard data practices, I maintained original copies of each file in a dedicated directory.  I saved working versions of the files in a separate folder to make sure the orignial data was uncompromised in case it needed to be restored or reviewed.  I kept a log of all changes made to the "working" versions of the files.
 
 I previewed the monthly data to get an idea of its organization.  The structure of the tables showed data on individual rides that occurred during the calendar month; data for each ride was grouped into rows.  The columns recorded the following variables:
-* Ride ID:  a unique alphanumeric identifier for each ride (a.k.a trip)
+-Ride ID:  a unique alphanumeric identifier for each ride (a.k.a trip)
 - Ride Type:  descriptor of the type of bike rented
 - Start Time:  included date and time of the rental's start 
 - End Time:  included date and time of the rental's end
@@ -75,7 +76,7 @@ After previewing the data sets, I realized that the full scope of analysis requi
 
 ### Data Cleaning with Spreadsheets
 For each of the monthly data sets, I completed the following actions to clean and verify the data:
-* Performed "Remove Duplicates" action to ensure each row contained unique records.  Duplicates were deleted.
+- Performed "Remove Duplicates" action to ensure each row contained unique records.  Duplicates were deleted.
 - Reviewed the minimum and maximum values for the rental start date to verify each month's data only included rentals that occurred in that month.
 - Reviewed the minimum and maximum values for the rental return date to verify each month's data only included rentals that occurred in that month.  In some instances, the latest return date occurred during the following month, which was acceptable.
 - Calculated the ride length (ride ending time - ride starting time) for each record.  Saved these results in a new column.
@@ -160,7 +161,7 @@ ORDER BY
 I continued my use of SQL, as that tool was the best fit for a large table of the size created by the combined data sets.
 
 I then executed several queries to obtain summary statistics on this data set, which I used to verify subseuqent data cleaning steps returned the expected results.  
-* I queried the table to determine the total number of riders, as determined by counting the number of records in the ride_id column.
+- I queried the table to determine the total number of riders, as determined by counting the number of records in the ride_id column.
 <detail>
 <summary>Show SQL</summary>
 ```sql
@@ -259,7 +260,7 @@ GROUP BY
 Now that I had a table containing cleaned data from all the combined months in the review period, I could begin my analysis.  I continued to use SQL to pull subsets of the data I could filter and sort in a variety of ways.  I saved the results of each of these queries as .CSV files and exported each to a "Summary Data" directory for access and use in other analysis and data visualization tools (Google Sheets and Tableau).  
 
 Given the information contained in the monthly data, I began to explore the interplay of a variety of variables to look for trends and compare ridership for members and casual riders:
-* Riders per day
+- Riders per day
 - Holidays
 - Average ride time
 - Trip destination
@@ -538,7 +539,7 @@ In addition to the queries noted in the previous sections, I executed several ot
 In this scenario, my direct manager gave this assignment to me.  I was to report my findings back to her at the conclusion of my work.   My analysis may also need to be available for sharing with the other stakeholders:  members of the marketing team (some of which were working to answer other questions releavant to the proposed marketing campaign) and the executive team, who will ultimately be making decisions about how to proceed with the company's marketing efforts.  I knew I had to share information directly with my manager and thus expected to brief her in person at the project's conclusion.  I decided to write up a report of my analysis that could be provided to the other stakeholders for their review as needed. 
 
 In the report, I laid out the key elements necessary to understand my analysis.  These included the following:
-* A statement of the business objective
+- A statement of the business objective
 - A background on the source of the data, it's limitations, and the assumptions made when conducting the analysis
 - The tools used to conduct the analysis and prepare the data visualizations
 - An overview of the steps taken to clean the data
